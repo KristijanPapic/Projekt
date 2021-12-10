@@ -58,8 +58,22 @@
       if(current_time > saved_next_update_time){
         currency();
       }
-      <?php  include "send-rate.php" ; ?>
-      const rate = <?php  echo json_encode($_SESSION['rate']); ?>;
+      var rate;
+      $.ajax({
+    type: "POST",
+    url: 'send-rate.php',
+    dataType: 'json',
+    async: false,
+    data: {"data":"check"},
+    success: function(data){
+        rate = data;
+        console.log(rate);
+        console.log(rate['HRK']);
+        console.log("radi");
+        console.log(data.HRK);
+    }
+ });
+ console.log(rate.USD);
           
       let previous_left_select = "";
       let previous_right_select = "";
