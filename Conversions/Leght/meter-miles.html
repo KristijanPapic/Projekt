@@ -38,11 +38,11 @@
             let left_select = $("#left_select").val();
             let right_select = $("#right_select").val();
             if(left_select=="m"){
-              $("#right_input").val(left_value * ratio[right_select]);
+              $("#right_input").val((left_value * ratio[right_select]).toFixed(3));
             }
             else{
               left_value = left_value / ratio[left_select];
-              $("#right_input").val(left_value * ratio[right_select]);
+              $("#right_input").val((left_value * ratio[right_select]).toFixed(3));
             }
           }
 
@@ -78,7 +78,7 @@
                 <form autocomplete="off" id="con_form">
                   <div class="row">
                     <div class="col-sm-5" align="center">
-                      <label class="control-label" for="left_input" id="left_input_label">Meter</label>
+                      <label class="control-label" for="left_input" id="left_input_label">From</label>
                       <input type="number" class="form-control-lg mb-4" id="left_input">
     
                       <select class="form-select form-select-lg" id="left_select" onchange="left_change(this);">
@@ -100,7 +100,7 @@
                     </div>
     
                     <div class="col-sm-5" align="center">
-                      <label for="right_input" id="right_input_label">Miles</label>
+                      <label for="right_input" id="right_input_label">To</label>
                       <input type="number" class="form-control-lg mb-4" id="right_input"
                         readonly step=".01">
     

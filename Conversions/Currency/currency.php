@@ -59,8 +59,6 @@
         currency();
       }
       <?php  include "send-rate.php" ; ?>
-      
-      
       const rate = <?php  echo json_encode($_SESSION['rate']); ?>;
           
       let previous_left_select = "";
