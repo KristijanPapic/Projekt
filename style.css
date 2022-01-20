@@ -95,3 +95,10 @@ margin-bottom: 50px;
 .nav-link{
   font-size: medium;
 }
+#con_table{
+  border-color: black;
+  font-size: large;
+}
+#table_from,#table_to{
+  background-color: rgb(97, 94, 88);
+}

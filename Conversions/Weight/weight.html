@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>SwiftConversions</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+        <link rel="stylesheet" href="../../style.css">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
+        <script>
+          let previous_left_select = "";
+      let previous_right_select = "";
+      function left_change(select){
+        $('#right_input').val("");
+       if(previous_left_select != ""){
+        $('#right_select option[value ="' + previous_left_select + '"]').prop("disabled", false);
+      }
+        let select_value= $('#left_select').val()
+        $('#right_select option[value ="' + select_value + '"]').prop("disabled", true);
+          previous_left_select = select_value;
+
+        }
+
+        function right_change(select){
+          $('#right_input').val("");
+          if(previous_right_select != ""){
+            $('#left_select option[value ="' + previous_right_select + '"]').prop("disabled", false);
+          }
+           let select_value= $('#right_select').val()
+          $('#left_select option[value ="' + select_value + '"]').prop("disabled", true);
+          previous_right_select = select_value;
+        }
+          ratio = {kg:1, g:1000, mg:1000000, metricTon:1/1000, longTon:0.0009842073, shortTon:0.0011023122, pound:2.2046244202, ounce:35.273990723, carrat:5000};
+          function convert(input){
+            let left_select = $("#left_select").val();
+            let right_select = $("#right_select").val();
+            if(left_select=="kg"){
+              return (input * ratio[right_select]).toFixed(6);
+            }
+            else{
+              input = input / ratio[left_select];
+              return (input * ratio[right_select]).toFixed(6);
+            }
+          }
+          function convertToField(){
+            result = convert($('#left_input').val());
+            $('#right_input').val(result);
+          }
+
+          function reverse(){
+            let left_select = $('#left_select').val();
+            let right_select = $('#right_select').val();
+            $('#left_select').val(right_select);
+            $('#right_select').val(left_select);
+            let left_value = $('#left_input').val();
+            let right_value = $('#right_input').val();
+            $('#left_input').val(right_value);
+            $('#right_input').val(left_value);
+            right_change();
+            left_change();
+            fill_table();
+          }
+
+          let params = new URLSearchParams(window.location.search);
+          function select_params(){
+            $('#left_select').val(params.get("from"));
+            left_change($('#left_select'));
+            $('#right_select').val(params.get("to"));
+            right_change($('#right_select'));
+          }
+           
+          
+        </script>
+    </head>
+    <body onload="select_params();fill_table()">
+      <div id="page-container">
+        <div id="page-content">
+        <div id="nav-placeholder"></div>
+
+        <script>
+      $(function(){
+        $("#nav-placeholder").load("../../nav.html");
+      });
+    </script>
+              <div class="row">
+                <div class="col text-center">
+                  <h3 id="con_title">Weight conversion</h3>
+                </div>
+              </div>
+              <div class="container-sm mx-auto" id="conversion-block">
+                <form autocomplete="off" id="con_form">
+                  <div class="row">
+                    <div class="col-sm-5" align="center">
+                      <label class="control-label" for="left_input" id="left_input_label">From</label>
+                      <input type="number" class="form-control-lg mb-4" id="left_input">
+    
+                      <select class="form-select form-select-lg" id="left_select" onchange="left_change();fill_table();">
+                        <option selected value="kg">Kilogram</option>
+                        <option value="g">Gram</option>
+                        <option value="mg">Miligram</option>
+                        <option value="metricTon">Metric Ton</option>
+                        <option value="longTon">Long Ton</option>
+                        <option value="shortTon">Short Ton</option>
+                        <option value="pound">Pound</option>
+                        <option value="ounce">Ounce</option>
+                        <option value="carrat">Carrat</option>
+                      </select>
+    
+                    </div>
+                    <div class="col-sm-2 text-center" id="glyph_col">
+                      <button type="button" onclick="reverse();" class="btn btn-lg btn-outline-dark rounded-circle mt-3 ms-3 me-2"><i class="bi bi-arrow-left-right" id="con_glyph"></i></button>
+                    </div>
+    
+                    <div class="col-sm-5" align="center">
+                      <label for="right_input" id="right_input_label">To</label>
+                      <input type="number" class="form-control-lg mb-4" id="right_input"
+                        readonly step=".01">
+    
+                      <select class="form-select form-select-lg" id="right_select" onchange="right_change();fill_table();">
+                        <option value="kg">Kilogram</option>
+                        <option select value="g">Gram</option>
+                        <option value="mg">Miligram</option>
+                        <option value="metricTon">Metric Ton</option>
+                        <option value="longTon">Long Ton</option>
+                        <option value="shortTon">Short Ton</option>
+                        <option value="pound">Pound</option>
+                        <option value="ounce">Ounce</option>
+                        <option value="carrat">Carrat</option>
+                      </select>
+                    </div>
+                  </div>
+    
+                  <div class="text-center" id="buttons">
+                    <button type="button" class="btn btn-dark btn-lg"
+                      onclick="convertToField()">Convert</button>
+                    <button type="reset" class="btn btn-dark btn-lg">Clear</button>
+                  </div>
+                </form>
+              </div>
+  <div class="container-fluid pt-5" id="con-desc">
+    <div class="row">
+      <p class="lead">
+      In science and engineering, the <b>weight</b> of an object is the force acting on the object due to gravity.
+    </p>
+    </div>
+    <div class="row p-5">
+      <h3 class="text-center">Quick conversions table</h3>
+    <table class="table table-bordered text-center" id="con_table">
+      
+        <tr>
+          <th class="w-50" id="table_from"></th>
+          <th class="w-50" id="table_to"></th>
+        </tr>
+
+    
+    </table>
+    <script>
+      function fill_table(){
+        $("#con_table td").remove();
+        $('#table_from').text($('#left_select option:selected').text());
+        $('#table_to').text($('#right_select option:selected').text());
+        for (let i = 0; i<6; i++){
+          $("<tr><td>" + Math.pow(10,i) + "</td><td>" + convert(Math.pow(10,i)) + "</td</tr>").appendTo("#con_table")
+        }
+      }
+    </script>
+    </div>
+  </div>
+</div>
+</div>  
+    
+
+
+        <div id="footer-placeholder"></div>
+
+        <script>
+      $(function(){
+        $("#footer-placeholder").load("../../footer.html");
+      });
+    </script>
+    </body>
+</html>

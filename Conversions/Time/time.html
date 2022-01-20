@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>SwiftConversions</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+        <link rel="stylesheet" href="../../style.css">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
+        <script>
+          let previous_left_select = "";
+      let previous_right_select = "";
+      function left_change(select){
+        $('#right_input').val("");
+       if(previous_left_select != ""){
+        $('#right_select option[value ="' + previous_left_select + '"]').prop("disabled", false);
+      }
+        let select_value= $('#left_select').val()
+        $('#right_select option[value ="' + select_value + '"]').prop("disabled", true);
+          previous_left_select = select_value;
+
+        }
+
+        function right_change(select){
+          $('#right_input').val("");
+          if(previous_right_select != ""){
+            $('#left_select option[value ="' + previous_right_select + '"]').prop("disabled", false);
+          }
+           let select_value= $('#right_select').val()
+          $('#left_select option[value ="' + select_value + '"]').prop("disabled", true);
+          previous_right_select = select_value;
+        }
+          ratio = {s:1, milS:1000, micS:1000000, ns:1000000000, ps:1000000000000, min:0.0166666667, hr:0.0002777778, dy:0.0000115741, week:0.0000016534, month:0.000000380257, year:0.000000031688};
+          function convert(input){
+            let left_select = $("#left_select").val();
+            let right_select = $("#right_select").val();
+            if(left_select=="m"){
+              return (input * ratio[right_select]).toFixed(6);
+            }
+            else{
+              input = input / ratio[left_select];
+              return (input * ratio[right_select]).toFixed(6);
+            }
+          }
+          function convertToField(){
+            result = convert($('#left_input').val());
+            $('#right_input').val(result);
+          }
+
+          function reverse(){
+            let left_select = $('#left_select').val();
+            let right_select = $('#right_select').val();
+            $('#left_select').val(right_select);
+            $('#right_select').val(left_select);
+            let left_value = $('#left_input').val();
+            let right_value = $('#right_input').val();
+            $('#left_input').val(right_value);
+            $('#right_input').val(left_value);
+            right_change();
+            left_change();
+            fill_table();
+          }
+
+          let params = new URLSearchParams(window.location.search);
+          function select_params(){
+            $('#left_select').val(params.get("from"));
+            left_change($('#left_select'));
+            $('#right_select').val(params.get("to"));
+            right_change($('#right_select'));
+          }
+           
+          
+        </script>
+    </head>
+    <body onload="select_params();fill_table()">
+      <div id="page-container">
+        <div id="page-content">
+        <div id="nav-placeholder"></div>
+
+        <script>
+      $(function(){
+        $("#nav-placeholder").load("../../nav.html");
+      });
+    </script>
+              <div class="row">
+                <div class="col text-center">
+                  <h3 id="con_title">Time conversion</h3>
+                </div>
+              </div>
+              <div class="container-sm mx-auto" id="conversion-block">
+                <form autocomplete="off" id="con_form">
+                  <div class="row">
+                    <div class="col-sm-5" align="center">
+                      <label class="control-label" for="left_input" id="left_input_label">From</label>
+                      <input type="number" class="form-control-lg mb-4" id="left_input">
+    
+                      <select class="form-select form-select-lg" id="left_select" onchange="left_change();fill_table();">
+                        <option selected value="s">Second</option>
+                        <option value="milS">Millisecond</option>
+                        <option value="micS">Microsecond</option>
+                        <option value="ns">Nanosecond</option>
+                        <option value="ps">Picosecond</option>
+                        <option value="min">Minute</option>
+                        <option value="hr">Hour</option>
+                        <option value="dy">Day</option>
+                        <option value="week">Week</option>
+                        <option value="month">Month</option>
+                        <option value="year">Year</option>
+                      </select>
+    
+                    </div>
+                    <div class="col-sm-2 text-center" id="glyph_col">
+                      <button type="button" onclick="reverse();" class="btn btn-lg btn-outline-dark rounded-circle mt-3 ms-3 me-2"><i class="bi bi-arrow-left-right" id="con_glyph"></i></button>
+                    </div>
+    
+                    <div class="col-sm-5" align="center">
+                      <label for="right_input" id="right_input_label">To</label>
+                      <input type="number" class="form-control-lg mb-4" id="right_input"
+                        readonly step=".01">
+    
+                      <select class="form-select form-select-lg" id="right_select" onchange="right_change();fill_table();">
+                        <option value="s">Second</option>
+                        <option select value="milS">Millisecond</option>
+                        <option value="micS">Microsecond</option>
+                        <option value="ns">Nanosecond</option>
+                        <option value="ps">Picosecond</option>
+                        <option value="min">Minute</option>
+                        <option value="hr">Hour</option>
+                        <option value="dy">Day</option>
+                        <option value="week">Week</option>
+                        <option value="month">Month</option>
+                        <option value="year">Year</option>
+                      </select>
+                    </div>
+                  </div>
+    
+                  <div class="text-center" id="buttons">
+                    <button type="button" class="btn btn-dark btn-lg"
+                      onclick="convertToField()">Convert</button>
+                    <button type="reset" class="btn btn-dark btn-lg">Clear</button>
+                  </div>
+                </form>
+              </div>
+  <div class="container-fluid pt-5" id="con-desc">
+    <div class="row">
+      <p class="lead">
+      <b>Time</b> is the continued sequence of existence and events that occurs in an apparently irreversible succession from the past, through the present, into the future.[1][2][3] It is a component quantity of various measurements used to sequence events, to compare the duration of events or the intervals between them, and to quantify rates of change of quantities in material reality or in the conscious experience.
+    </p>
+    </div>
+    <div class="row p-5">
+      <h3 class="text-center">Quick conversions table</h3>
+    <table class="table table-bordered text-center" id="con_table">
+      
+        <tr>
+          <th class="w-50" id="table_from"></th>
+          <th class="w-50" id="table_to"></th>
+        </tr>
+
+    
+    </table>
+    <script>
+      function fill_table(){
+        $("#con_table td").remove();
+        $('#table_from').text($('#left_select option:selected').text());
+        $('#table_to').text($('#right_select option:selected').text());
+        for (let i = 0; i<6; i++){
+          $("<tr><td>" + Math.pow(10,i) + "</td><td>" + convert(Math.pow(10,i)) + "</td</tr>").appendTo("#con_table")
+        }
+      }
+    </script>
+    </div>
+  </div>
+</div>
+</div>  
+    
+
+
+        <div id="footer-placeholder"></div>
+
+        <script>
+      $(function(){
+        $("#footer-placeholder").load("../../footer.html");
+      });
+    </script>
+    </body>
+</html>

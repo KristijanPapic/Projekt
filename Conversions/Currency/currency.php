@@ -1,5 +1,5 @@
 <?php
-  include "spoj.php" ;
+  include "connection.php" ;
   ?>
   <!DOCTYPE html>
 
@@ -25,8 +25,6 @@
       
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.2.0/dist/select2-bootstrap-5-theme.min.css" />
       <script>
-      
-        
       
        async function currency(){
       const API_URL = "https://open.er-api.com/v6/latest/USD";
@@ -124,7 +122,8 @@
             });
             $('#left-select').select2({
               theme: "bootstrap-5",
-            });            
+            });
+            fill_table();            
           });
           
         </script>
@@ -189,70 +188,64 @@
             </form>
           </div>
           <div class="container-fluid pt-5 border border-dark" id="con-desc">
-            <div>
-              <h3>Meter</h3>
-              <p>
-                <b>Definition: </b>A meter, or metre (symbol: m), is the base
-                unit of length and distance in the International System of Units
-                (SI). The meter is defined as the distance traveled by light in
-                1/299 792 458 of a second. This definition was slightly modified
-                in 2019 to reflect changes in the definition of the second.
-              </p>
-              <p>
-                <b>History/origin: </b>Originally, in 1793, the meter was
-                defined as one ten-millionth of the distance from the equator to
-                the North Pole. This changed in 1889, when the International
-                prototype metre was established as the length of a prototype
-                meter bar (made of an alloy of 90% platinum and 10% iridium)
-                measured at the melting point of ice. In 1960, the meter was
-                again redefined, this time in terms of a certain number of
-                wavelengths of a certain emission line of krypton-86. The
-                current definition of the meter is effectively the same as the
-                definition that was adopted in 1983, with slight modifications
-                due to the change in definition of the second.
-              </p>
-              <p>
-                <b>Current use: </b>Being the SI unit of length, the meter is
-                used worldwide in many applications such as measuring distance,
-                height, length, width, etc. The United States is one notable
-                exception in that it largely uses US customary units such as
-                yards, inches, feet, and miles instead of meters in everyday
-                use.
-              </p>
-            </div>
-            <div>
-              <h3>Mile</h3>
-              <p>
-                <b>Definition: </b>A mile (symbol: mi or m) is a unit of length
-                in the imperial and US customary systems of measurement. It is
-                currently defined as 5,280 feet, 1,760 yards, or exactly
-                1,609.344 meters.
-              </p>
-              <p>
-                <b>History/origin: </b>The mile is an English unit (predecessor
-                of Imperial units and United States Customary Units) of length.
-                The use of the abbreviation "m" for mile was common before the
-                widespread adoption of the metric system; after the adoption of
-                the metric system, "mi" became the preferred abbreviation in
-                order to avoid confusion between miles and meters. The
-                definition of a mile as 5,280 feet (or 8 furlongs), sometimes
-                referred to as the statute mile, international mile, or land
-                mile, which differs from the Roman mile of 5,000 feet, developed
-                due to the importance of the furlong in England, back in 1593.
-                There also exist a number of units based on, or closely related
-                to, the Roman mile, including the nautical mile (1.852 km
-                exactly), Italian mile (~1.852 km), and the Chinese mile (500m
-                exactly).
-              </p>
-              <p>
-                <b>Current use: </b> Although most countries have adopted the
-                metric system and use kilometers, rather than miles, to express
-                land distance, the mile is still prevalently used in countries
-                such as the United States (US), United Kingdom (UK), Myanmar,
-                and Liberia, as well as some other countries which are either US
-                or UK territories, or have historical ties with either country.
-              </p>
-            </div>
+            <div class="row p-5">
+      <h3 class="text-center">Current rates to USD</h3>
+    <table class="table table-bordered text-center" id="con_table">
+      
+        <tr>
+          <th class="w-50" id="table_from">Currency</th>
+          <th class="w-50" id="table_to">Rate</th>
+        </tr>
+        <tr>
+          <td>EUR-Euro</td>
+          <td id="table_eur_rate"></td>
+        </tr>
+        <tr>
+          <td>GBP-British Pound</td>
+          <td id="table_gbp_rate"></td>
+        </tr>
+        <tr>
+          <td>INR-Indian Rupee</td>
+          <td id="table_inr_rate"></td>
+        </tr>
+        <tr>
+          <td>AUD-Australian Dollar</td>
+          <td id="table_aud_rate"></td>
+        </tr>
+        <tr>
+          <td>CAD-Canadian Dollar</td>
+          <td id="table_cad_rate"></td>
+        </tr>
+        <tr>
+          <td>SGD-Singapore Dollar</td>
+          <td id="table_sgd_rate"></td>
+        </tr>
+        <tr>
+          <td>CHF-Swiss Franc</td>
+          <td id="table_chf_rate"></td>
+        </tr>
+        <tr>
+          <td>JPY-Japanese Yen</td>
+          <td id="table_jpy_rate"></td>
+        </tr>
+
+
+
+    
+    </table>
+    <script>
+      function fill_table(){
+        $('#table_eur_rate').text(rate["EUR"]);
+        $('#table_gbp_rate').text(rate["GBP"]);
+        $('#table_inr_rate').text(rate["INR"]);
+        $('#table_aud_rate').text(rate["AUD"]);
+        $('#table_cad_rate').text(rate["CAD"]);
+        $('#table_sgd_rate').text(rate["SGD"]);
+        $('#table_chf_rate').text(rate["CHF"]);
+        $('#table_jpy_rate').text(rate["JPY"]);
+      }
+    </script>
+    </div>
           </div>
         </div>
       </div>

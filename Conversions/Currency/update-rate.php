@@ -1,6 +1,6 @@
 
 <?php
-include "spoj.php";
+include "connection.php";
 $sql = "DELETE FROM currency_rate;";
 mysqli_query($conn, $sql) or die(mysqli_error($conn));
 $sql = "DELETE FROM rate_update_time;";
